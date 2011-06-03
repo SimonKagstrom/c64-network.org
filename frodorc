@@ -1,0 +1,14 @@
+DrivePath8 = discs/barbarian.d64
+JoystickSwap = TRUE
+JoystickButtons0 = 10
+JoystickButtons1 = 28
+JoystickButtons2 = 56
+JoystickButtons3 = 59
+JoystickButtons4 = 8
+JoystickButtons5 = 11
+JoystickButtons15 = 12
+JoystickButtons18 = 40
+NetworkKey = 30141
+NetworkName = SimonK
+NetworkRegion = 1
+CursorKeysForJoystick = TRUE
