@@ -21,6 +21,8 @@
 
 #if defined(GEKKO)
 # include "sysconfig.h.Wii"
+#elif defined(ANDROID)
+# include "sysconfig.h.Android"
 #else
 # include "sysconfig.h.Host-SDL"
 #endif
