@@ -57,8 +57,9 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 	gui/virtual_keyboard.cpp \
 	gui/widget.cpp \
 
-LOCAL_SHARED_LIBRARIES := SDL SDL_ttf SDL_image png
+LOCAL_SHARED_LIBRARIES := SDL SDL_image SDL_ttf
+LOCAL_STATIC_LIBRARIES := png freetype
 
-LOCAL_LDLIBS := -llog -lz
+LOCAL_LDLIBS := -lz -lm -lc -llog
 
 include $(BUILD_SHARED_LIBRARY)
