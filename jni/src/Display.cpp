@@ -96,8 +96,8 @@ void C64Display::UpdateLEDs(int l0, int l1, int l2, int l3)
 
 // Display surface
 static Uint8 screen[DISPLAY_X * DISPLAY_Y];
-//static Uint16 *screen_16;
-//static Uint32 *screen_32;
+static Uint16 *screen_16;
+static Uint32 *screen_32;
 static int screen_bits_per_pixel;
 
 static SDL_Surface *sdl_screen;
@@ -158,9 +158,9 @@ int init_graphics(void)
 	SDL_ShowCursor(SDL_DISABLE);
 
 	SDL_FreeSurface(sdl_screen);
-	//sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y + 17, 8, rmask, gmask, bmask, amask);
 	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
-	sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y, screen_bits_per_pixel, rmask, gmask, bmask, amask);
+	sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y,
+			screen_bits_per_pixel, rmask, gmask, bmask, amask);
 	
 	panic_if(!sdl_screen,
 			"Cannot allocate surface to draw on: %s\n",
@@ -177,19 +177,16 @@ int init_graphics(void)
 			flags);
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
-	//this part of code seems useless
-	/*
 	free(screen_16);
 	free(screen_32);
 
 	switch (screen_bits_per_pixel)
 	{
 	case 8:
-		 
-		Default, no need to do anything further 
+		/* Default, no need to do anything further */
 		break;
 	case 16:
-		Allocate a 16 bit screen
+		/* Allocate a 16 bit screen */
 		screen_16 = (Uint16*)calloc(real_screen->pitch * FULL_DISPLAY_Y, sizeof(Uint16) );
 		break;
 	case 24:
@@ -200,8 +197,7 @@ int init_graphics(void)
 		printf("What is this???\n");
 		break;
 	}
-	*/
-	
+
 	return 1;
 }
 
