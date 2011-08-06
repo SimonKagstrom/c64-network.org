@@ -162,12 +162,9 @@ int init_graphics(void)
 	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
 	sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y, screen_bits_per_pixel, rmask, gmask, bmask, amask);
 	
-	if (!sdl_screen)
-	{
-		fprintf(stderr, "Cannot allocate surface to draw on: %s\n",
-				SDL_GetError());
-		exit(1);
-	}
+	panic_if(!sdl_screen,
+			"Cannot allocate surface to draw on: %s\n",
+			SDL_GetError());
 	
 	#ifndef GEKKO
 	if (ThePrefs.DisplayType == DISPTYPE_SCREEN)
@@ -178,11 +175,8 @@ int init_graphics(void)
 	SDL_FreeSurface(real_screen);
 	real_screen = SDL_SetVideoMode(FULL_DISPLAY_X, FULL_DISPLAY_Y, screen_bits_per_pixel,
 			flags);
-	if (!real_screen)
-	{
-		fprintf(stderr, "\n\nCannot initialize video: %s\n", SDL_GetError());
-		exit(1);
-	}
+	panic_if(!real_screen,
+			"\n\nCannot initialize video: %s\n", SDL_GetError());
 	//this part of code seems useless
 	/*
 	free(screen_16);
