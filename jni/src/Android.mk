@@ -14,6 +14,6 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 
 LOCAL_SHARED_LIBRARIES := SDL
 
-LOCAL_LDLIBS := -lGLESv1_CM -llog
+LOCAL_LDLIBS := -llog
 
 include $(BUILD_SHARED_LIBRARY)
