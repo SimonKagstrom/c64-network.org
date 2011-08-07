@@ -113,6 +113,9 @@ static Uint16 palette_16[PALETTE_SIZE];
 static Uint32 palette_32[PALETTE_SIZE];
 SDL_Color sdl_palette[PALETTE_SIZE];
 
+int FULL_DISPLAY_X = 640;
+int FULL_DISPLAY_Y = 480;
+
 /*
   C64 keyboard matrix:
 

@@ -47,8 +47,8 @@ const int DISPLAY_Y = 0x110;
 #endif
 
 #if defined(HAVE_SDL)
-const int FULL_DISPLAY_X = 640;
-const int FULL_DISPLAY_Y = 480;
+extern int FULL_DISPLAY_X;
+extern int FULL_DISPLAY_Y;
 #endif
 
 class C64Window;
