@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ndk-build $* && ant debug
+ndk-build APP_STL=stlport_static $* && ant debug
