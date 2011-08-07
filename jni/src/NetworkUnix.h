@@ -24,7 +24,7 @@ bool Network::InitSockaddr (struct sockaddr_in *name,
 	struct hostent *hostinfo = gethostbyname (hostname);
 	if (hostinfo == NULL)
 	{
-		fprintf (stderr, "Unknown host %s.\n", hostname);
+		LOG("Unknown host %s.\n", hostname);
 		return false;
 	}
 
@@ -77,7 +77,7 @@ bool Network::Select(int sock, struct timeval *tv)
 	v = select(sock + 1, &fds, NULL, NULL, tv);
 	if (v < 0)
 	{
-			fprintf(stderr, "Select failed\n");
+			LOG("Select failed\n");
 			return false;
 	}
 

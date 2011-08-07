@@ -817,7 +817,7 @@ bool Network::MarshalData(NetworkUpdate *p)
 	} break;
 	default:
 		/* Unknown data... */
-		fprintf(stderr, "Got unknown data %d while marshalling. Something is wrong\n",
+		LOG("Got unknown data %d while marshalling. Something is wrong\n",
 				p->type);
 		return false;
 	}

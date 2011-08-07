@@ -22,7 +22,7 @@ TTF_Font *read_and_alloc_font(const char *path, int pt_size)
 	size_t r;
 
 	if (!fp) {
-		fprintf(stderr, "Could not open font %s\n", path);
+		LOG("Could not open font %s\n", path);
 		return NULL;
 	}
 	data = (Uint8*)xmalloc(1 * 1024*1024);
@@ -35,14 +35,14 @@ TTF_Font *read_and_alloc_font(const char *path, int pt_size)
 	rw = SDL_RWFromMem(data, 1 * 1024 * 1024);
 	if (!rw)
 	{
-		fprintf(stderr, "Could not create RW: %s\n", SDL_GetError());
+		LOG("Could not create RW: %s\n", SDL_GetError());
 		free(data);
 		return NULL;
 	}
 	out = TTF_OpenFontRW(rw, 1, pt_size);
 	if (!out)
 	{
-		fprintf(stderr, "TTF: Unable to create font %s (%s)\n",
+		LOG("TTF: Unable to create font %s (%s)\n",
 				path, TTF_GetError());
 	}
 	fclose(fp);
@@ -179,13 +179,13 @@ static int png_colortype_from_surface(SDL_Surface *surface)
 
 static void png_user_warn(png_structp ctx, png_const_charp str)
 {
-	fprintf(stderr, "libpng: warning: %s\n", str);
+	LOG("libpng: warning: %s\n", str);
 }
 
 
 static void png_user_error(png_structp ctx, png_const_charp str)
 {
-	fprintf(stderr, "libpng: error: %s\n", str);
+	LOG("libpng: error: %s\n", str);
 }
 
 extern SDL_Color sdl_palette[PALETTE_SIZE];

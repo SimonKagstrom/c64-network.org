@@ -16,7 +16,7 @@ bool Network::InitSockaddr (struct sockaddr_in *name,
 
 	if (hostinfo == NULL)
 	{
-		fprintf (stderr, "Unknown host %s.\n", hostname);
+		LOG("Unknown host %s.\n", hostname);
 		return false;
 	}
 

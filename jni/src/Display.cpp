@@ -834,7 +834,7 @@ void C64::open_joystick(int port)
 	joy_maxx[port] = joy_maxy[port] = 32768;
 	joy[port] = SDL_JoystickOpen(port);
 	if (joy[port] == NULL)
-		fprintf(stderr, "Couldn't open joystick %d\n", port + 1);
+		LOG("Couldn't open joystick %d\n", port + 1);
 }
 
 void C64::close_joystick(int port)

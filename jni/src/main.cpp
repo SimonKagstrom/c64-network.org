@@ -118,12 +118,12 @@ extern "C" int main(int argc, char **argv)
 
 	// Init SDL
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK) < 0) {
-                fprintf(stderr, "Couldn't initialize SDL (%s)\n", SDL_GetError());
+                LOG("Couldn't initialize SDL (%s)\n", SDL_GetError());
                 return 1;
 	}
         if (TTF_Init() < 0)
         {
-                fprintf(stderr, "Unable to init TTF: %s\n", TTF_GetError() );
+                LOG("Unable to init TTF: %s\n", TTF_GetError());
 		return 1;
         }
 

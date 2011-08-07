@@ -26,6 +26,8 @@
 
 #include "VIC.h"
 
+#include "utils.hh"
+
 static SDL_AudioSpec spec;
 
 #define FRODO_SNDBUF 512
@@ -70,7 +72,7 @@ void DigitalRenderer::init_sound(void)
 
 	ready = false;
 	if ( SDL_OpenAudio(&spec, NULL) < 0 ) {
-		fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+		LOG("Couldn't open audio: %s\n", SDL_GetError());
 		return ;
 	}
 
