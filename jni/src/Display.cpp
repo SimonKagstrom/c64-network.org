@@ -181,9 +181,6 @@ int init_graphics(void)
 
 	switch (screen_bits_per_pixel)
 	{
-	case 8:
-		/* Default, no need to do anything further */
-		break;
 	case 16:
 		/* Allocate a 16 bit screen */
 		screen_16 = (Uint16*)calloc(real_screen->pitch * FULL_DISPLAY_Y, sizeof(Uint16) );
@@ -192,8 +189,9 @@ int init_graphics(void)
 	case 32:
 		screen_32 = (Uint32*)calloc(real_screen->pitch * FULL_DISPLAY_Y, sizeof(Uint32) );
 		break;
+	case 8:
 	default:
-		printf("What is this???\n");
+		LOG("Needs 16, 24 or 32 bits colo depth\n");
 		break;
 	}
 
@@ -326,44 +324,13 @@ void C64Display::Update_16(uint8 *src_pixels)
 
 }
 
-void C64Display::Update_8(uint8 *src_pixels)
-{
-	const Uint16 src_pitch = DISPLAY_X;
-	const int x_border = (DISPLAY_X - FULL_DISPLAY_X / 2) / 2;
-	const int y_border = (DISPLAY_Y - FULL_DISPLAY_Y / 2) / 2;
-	Uint8 *dst_pixels = (Uint8*)real_screen->pixels;
-	const Uint16 dst_pitch = real_screen->pitch;
-
-	/* Center, double size */
-	for (int y = y_border; y < (FULL_DISPLAY_Y/2) + y_border; y++)
-	{
-		for (int x = x_border; x < (FULL_DISPLAY_X / 2 + x_border); x++)
-		{
-			int src_off = y * src_pitch + x;
-			int dst_off = (y * 2 - y_border * 2) * dst_pitch + (x * 2 - x_border * 2);
-			Uint8 v = src_pixels[src_off];
-
-			dst_pixels[ dst_off ] = v;
-			dst_pixels[ dst_off + 1 ] = v;
-			dst_pixels[ dst_off + dst_pitch ] = v;
-			dst_pixels[ dst_off + dst_pitch + 1] = v;
-		}
-	}
-}
-
 void C64Display::Update(uint8 *src_pixels)
 {
-	switch (screen_bits_per_pixel)
-	{
-	case 8:
-		this->Update_8(src_pixels); break;
-	case 16:
-		this->Update_16(src_pixels); break;
-	case 24:
-	case 32:
-	default:
-		this->Update_32((Uint8*)src_pixels); break;
-	}
+	if (screen_bits_per_pixel == 16)
+		this->Update_16(src_pixels);
+	else
+		this->Update_32(src_pixels);
+
 	Gui::gui->draw(real_screen);
 
 	SDL_UpdateWindowSurface(window);
@@ -1012,8 +979,6 @@ void C64Display::InitColors(uint8 *colors)
 	sdl_palette[green].g = 0xf0;
 	sdl_palette[green].r = sdl_palette[green].b = 0;
 
-	if (real_screen->format->BitsPerPixel == 8)
-		SDL_SetColors(real_screen, sdl_palette, 0, PALETTE_SIZE);
  	for (int i = 0; i < PALETTE_SIZE; i++) {
  		int rs = real_screen->format->Rshift;
  		int gs = real_screen->format->Gshift;
