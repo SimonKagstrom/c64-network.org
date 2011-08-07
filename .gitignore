@@ -3,3 +3,9 @@ bin/
 libs/
 obj/
 gen/
+jni/discs
+jni/saves
+jni/objs-host
+jni/frodo
+jni/deps
+
