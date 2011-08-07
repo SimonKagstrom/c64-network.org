@@ -142,7 +142,7 @@ int FULL_DISPLAY_Y = 480;
 int init_graphics(void)
 {
 	Uint32 rmask, gmask, bmask, amask;
-        const SDL_VideoInfo *info = SDL_GetVideoInfo();
+	const SDL_VideoInfo *info;
 
 	/* SDL interprets each pixel as a 32-bit number, so our masks must depend
            on the endianness (byte order) of the machine */
@@ -161,16 +161,6 @@ int init_graphics(void)
 	// Open window
 	SDL_ShowCursor(SDL_DISABLE);
 
-	SDL_FreeSurface(sdl_screen);
-	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
-	sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y,
-			screen_bits_per_pixel, rmask, gmask, bmask, amask);
-	
-	panic_if(!sdl_screen,
-			"Cannot allocate surface to draw on: %s\n",
-			SDL_GetError());
-
-	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
 	SDL_FreeSurface(real_screen);
 
 	window = SDL_CreateWindow("c64-network.org",
@@ -183,6 +173,17 @@ int init_graphics(void)
 	real_screen = SDL_GetWindowSurface(window);
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
+
+	SDL_FreeSurface(sdl_screen);
+	info = SDL_GetVideoInfo();
+	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
+	sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y,
+			screen_bits_per_pixel, rmask, gmask, bmask, amask);
+
+	panic_if(!sdl_screen,
+			"Cannot allocate surface to draw on: %s\n",
+			SDL_GetError());
+
 	free(screen_16);
 	free(screen_32);
 
