@@ -15,20 +15,27 @@ class Font;
 
 #define BUG_ON(cond)
 
+#if defined(ANDROID)
+#include <android/log.h>
+#define LOG(...) __android_log_print(ANDROID_LOG_VERBOSE, "c64-network.org", __VA_ARGS__)
+#else
+#define LOG(...) fprintf(stderr, __VA_ARGS__);
+#endif
+
 #define panic(x...) do \
   { \
-    fprintf(stderr, "=============PANIC PANIC PANIC===========\n"); \
-    fprintf(stderr, "%s:%d: ", __FILE__, __LINE__); fprintf(stderr, x); \
-    fprintf(stderr, "=========================================\n"); \
+    LOG("=============PANIC PANIC PANIC===========\n"); \
+    LOG("%s:%d: ", __FILE__, __LINE__); LOG(x); \
+    LOG("=========================================\n"); \
     assert(0); \
     exit(1); \
   } while(0)
 
 #define warning(x...) do \
   { \
-    fprintf(stderr, "==============WARNING WARNING============\n"); \
-    fprintf(stderr, "%s:%d: ", __FILE__, __LINE__); fprintf(stderr, x); \
-    fprintf(stderr, "=========================================\n"); \
+    LOG("==============WARNING WARNING============\n"); \
+    LOG("%s:%d: ", __FILE__, __LINE__); LOG(x); \
+    LOG("=========================================\n"); \
   } while(0)
 
 #define panic_if(cond, x...) \
