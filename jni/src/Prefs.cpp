@@ -120,7 +120,7 @@ Prefs::Prefs()
 	this->NetworkRegion = REGION_UNKNOWN;
 	this->CursorKeysForJoystick = true;
 
-	strcpy(this->Theme, "DEFAULT");
+	strcpy(this->Theme, "default");
 }
 
 
