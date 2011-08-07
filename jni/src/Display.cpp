@@ -100,6 +100,8 @@ static Uint16 *screen_16;
 static Uint32 *screen_32;
 static int screen_bits_per_pixel;
 
+static SDL_Window *window;
+
 static SDL_Surface *sdl_screen;
 SDL_Surface *real_screen = NULL;
 
@@ -176,8 +178,15 @@ int init_graphics(void)
 
 	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
 	SDL_FreeSurface(real_screen);
-	real_screen = SDL_SetVideoMode(FULL_DISPLAY_X, FULL_DISPLAY_Y, screen_bits_per_pixel,
-			flags);
+
+	window = SDL_CreateWindow("c64-network.org",
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+			FULL_DISPLAY_X, FULL_DISPLAY_Y,
+			SDL_WINDOW_SHOWN);
+	panic_if(!window,
+			"Can't create SDL window: %s\n", SDL_GetError());
+
+	real_screen = SDL_GetWindowSurface(window);
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
 	free(screen_16);
@@ -399,7 +408,7 @@ void C64Display::Update(uint8 *src_pixels)
 	}
 	Gui::gui->draw(real_screen);
 
-	SDL_Flip(real_screen);
+	SDL_UpdateWindowSurface(window);
 }
 
 void C64Display::Update()
