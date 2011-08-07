@@ -79,7 +79,6 @@ public:
 	void Update_8(uint8 *src_pixels);
 	void Update_16(uint8 *src_pixels);
 	void Update_32(uint8 *src_pixels);
-	void Update_stretched(uint8 *src_pixels);
 	SDL_Surface *SurfaceFromC64Display();
 	const char *GetTextMessage();
 	bool NumLock(void);

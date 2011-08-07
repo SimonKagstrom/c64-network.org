@@ -102,7 +102,6 @@ static int screen_bits_per_pixel;
 
 static SDL_Window *window;
 
-static SDL_Surface *sdl_screen;
 SDL_Surface *real_screen = NULL;
 
 // Keyboard
@@ -174,15 +173,8 @@ int init_graphics(void)
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
 
-	SDL_FreeSurface(sdl_screen);
 	info = SDL_GetVideoInfo();
 	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
-	sdl_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, DISPLAY_X, DISPLAY_Y,
-			screen_bits_per_pixel, rmask, gmask, bmask, amask);
-
-	panic_if(!sdl_screen,
-			"Cannot allocate surface to draw on: %s\n",
-			SDL_GetError());
 
 	free(screen_16);
 	free(screen_32);
@@ -359,47 +351,18 @@ void C64Display::Update_8(uint8 *src_pixels)
 	}
 }
 
-void C64Display::Update_stretched(uint8 *src_pixels)
-{
-	SDL_Rect srcrect = {0, 0, DISPLAY_X, DISPLAY_Y};
-	SDL_Rect dstrect = {0, 0, FULL_DISPLAY_X, FULL_DISPLAY_Y};
-	Uint8 *dst_pixels = (Uint8*)sdl_screen->pixels;
-	const Uint16 src_pitch = DISPLAY_X;
-
-	/* Draw 1-1 */
-	for (int y = 0; y < DISPLAY_Y; y++)
-	{
-		for (int x = 0; x < DISPLAY_X; x++)
-		{
-			int src_off = y * src_pitch + x;
-			int dst_off = src_off;
-			Uint8 v = src_pixels[src_off];
-
-			dst_pixels[ dst_off ] = v;
-		}
-	}
-
-	/* Stretch */
-	SDL_SoftStretch(sdl_screen, &srcrect, real_screen, &dstrect);
-}
-
 void C64Display::Update(uint8 *src_pixels)
 {
-	if (0)
-		this->Update_stretched(src_pixels);
-	else
+	switch (screen_bits_per_pixel)
 	{
-		switch (screen_bits_per_pixel)
-		{
-		case 8:
-			this->Update_8(src_pixels); break;
-		case 16:
-			this->Update_16(src_pixels); break;
-		case 24:
-		case 32:
-		default:
-			this->Update_32((Uint8*)src_pixels); break;
-		}
+	case 8:
+		this->Update_8(src_pixels); break;
+	case 16:
+		this->Update_16(src_pixels); break;
+	case 24:
+	case 32:
+	default:
+		this->Update_32((Uint8*)src_pixels); break;
 	}
 	Gui::gui->draw(real_screen);
 
