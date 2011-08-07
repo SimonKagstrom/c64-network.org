@@ -143,7 +143,6 @@ int init_graphics(void)
 {
 	Uint32 rmask, gmask, bmask, amask;
         const SDL_VideoInfo *info = SDL_GetVideoInfo();
-        Uint32 flags = SDL_DOUBLEBUF;
 
 	/* SDL interprets each pixel as a 32-bit number, so our masks must depend
            on the endianness (byte order) of the machine */
@@ -170,11 +169,6 @@ int init_graphics(void)
 	panic_if(!sdl_screen,
 			"Cannot allocate surface to draw on: %s\n",
 			SDL_GetError());
-	
-	#ifndef GEKKO
-	if (ThePrefs.DisplayType == DISPTYPE_SCREEN)
-		flags |= SDL_FULLSCREEN;
-	#endif
 
 	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
 	SDL_FreeSurface(real_screen);
