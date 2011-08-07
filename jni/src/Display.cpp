@@ -166,7 +166,7 @@ int init_graphics(void)
 	window = SDL_CreateWindow("c64-network.org",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			FULL_DISPLAY_X, FULL_DISPLAY_Y,
-			SDL_WINDOW_SHOWN);
+			SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
 	panic_if(!window,
 			"Can't create SDL window: %s\n", SDL_GetError());
 
