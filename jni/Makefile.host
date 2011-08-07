@@ -24,22 +24,22 @@ datadir = ${PREFIX}/share
 #GCOV=-fprofile-arcs -ftest-coverage
 
 
-CFLAGS ?=-ggdb -Wall  `sdl-config --cflags` -ISrc -O2 -fno-exceptions
+CFLAGS ?=-ggdb -Wall  `sdl-config --cflags` -Isrc -O2 -fno-exceptions
 DEFINES =-DFRODO_SC -DHAVE_CONFIG_H -DDATADIR=\"$(datadir)/frodo/\" -DBINDIR=\"$(bindir)/\" -DHAVE_SDL
 
 LDFLAGS ?= $(GCOV) `sdl-config --libs` -lSDL_ttf -lSDL_image -lpng
 
 
-CPP_SRCS=Src/C64_SC.cpp Src/main.cpp Src/Display.cpp Src/Prefs.cpp Src/SID.cpp \
-     Src/REU.cpp Src/IEC.cpp Src/1541fs.cpp Src/1541d64.cpp Src/1541t64.cpp \
-     Src/1541job.cpp Src/CPUC64_SC.cpp Src/VIC_SC.cpp \
-     Src/CIA_SC.cpp Src/CPU1541_SC.cpp Src/CPU_common.cpp Src/Network.cpp \
-     Src/gui/dialogue_box.cpp Src/gui/widget.cpp \
-	 Src/gui/game_info.cpp Src/gui/status_bar.cpp Src/gui/gui.cpp Src/gui/listener.cpp \
-	 Src/timer.cpp Src/utils.cpp Src/gui/virtual_keyboard.cpp Src/gui/menu.cpp \
-	 Src/gui/file_browser.cpp Src/data_store.cpp Src/gui/network_server_messages.cpp
+CPP_SRCS=src/C64_SC.cpp src/main.cpp src/Display.cpp src/Prefs.cpp src/SID.cpp \
+     src/REU.cpp src/IEC.cpp src/1541fs.cpp src/1541d64.cpp src/1541t64.cpp \
+     src/1541job.cpp src/CPUC64_SC.cpp src/VIC_SC.cpp \
+     src/CIA_SC.cpp src/CPU1541_SC.cpp src/CPU_common.cpp src/Network.cpp \
+     src/gui/dialogue_box.cpp src/gui/widget.cpp \
+	 src/gui/game_info.cpp src/gui/status_bar.cpp src/gui/gui.cpp src/gui/listener.cpp \
+	 src/timer.cpp src/utils.cpp src/gui/virtual_keyboard.cpp src/gui/menu.cpp \
+	 src/gui/file_browser.cpp src/data_store.cpp src/gui/network_server_messages.cpp
      
-C_SRCS=Src/d64-read.c Src/gui/menu_messages.c
+C_SRCS=src/d64-read.c src/gui/menu_messages.c
 
 
 OBJS=$(patsubst %.cpp,objs-host/%.o,$(CPP_SRCS)) $(patsubst %.c,objs-host/%.o,$(C_SRCS))
