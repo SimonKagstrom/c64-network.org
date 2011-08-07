@@ -23,11 +23,12 @@ bindir = ${exec_prefix}/bin
 datadir = ${PREFIX}/share
 #GCOV=-fprofile-arcs -ftest-coverage
 
+SDL_CONFIG_PATH ?= /home/ska/local/devel/sdl-1.3/bin
 
-CFLAGS ?=-ggdb -Wall  `sdl-config --cflags` -Isrc -O2 -fno-exceptions
+CFLAGS ?=-ggdb -Wall  `$(SDL_CONFIG_PATH)/sdl-config --cflags` -Isrc -O2 -fno-exceptions
 DEFINES =-DFRODO_SC -DHAVE_CONFIG_H -DDATADIR=\"$(datadir)/frodo/\" -DBINDIR=\"$(bindir)/\" -DHAVE_SDL
 
-LDFLAGS ?= $(GCOV) `sdl-config --libs` -lSDL_ttf -lSDL_image -lpng
+LDFLAGS ?= $(GCOV) `$(SDL_CONFIG_PATH)/sdl-config --libs` -lSDL_ttf -lSDL_image -lpng
 
 
 CPP_SRCS=src/C64_SC.cpp src/main.cpp src/Display.cpp src/Prefs.cpp src/SID.cpp \
