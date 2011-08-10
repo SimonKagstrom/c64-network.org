@@ -101,6 +101,7 @@ static Uint32 *screen_32;
 static int screen_bits_per_pixel;
 
 static SDL_Window *window;
+SDL_PixelFormat *pixel_format = NULL;
 
 SDL_Surface *real_screen = NULL;
 
@@ -168,6 +169,8 @@ int init_graphics(void)
 			SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
 	panic_if(!window,
 			"Can't create SDL window: %s\n", SDL_GetError());
+
+	pixel_format = SDL_AllocFormat(SDL_GetWindowPixelFormat(window));
 
 	real_screen = SDL_GetWindowSurface(window);
 	panic_if(!real_screen,
@@ -980,15 +983,15 @@ void C64Display::InitColors(uint8 *colors)
 	sdl_palette[green].r = sdl_palette[green].b = 0;
 
  	for (int i = 0; i < PALETTE_SIZE; i++) {
- 		int rs = real_screen->format->Rshift;
- 		int gs = real_screen->format->Gshift;
- 		int bs = real_screen->format->Bshift;
- 		int rl = real_screen->format->Rloss;
- 		int gl = real_screen->format->Gloss;
- 		int bl = real_screen->format->Bloss;
- 		int rm = real_screen->format->Rmask;
- 		int gm = real_screen->format->Gmask;
- 		int bm = real_screen->format->Bmask;
+ 		int rs = pixel_format->Rshift;
+ 		int gs = pixel_format->Gshift;
+ 		int bs = pixel_format->Bshift;
+ 		int rl = pixel_format->Rloss;
+ 		int gl = pixel_format->Gloss;
+ 		int bl = pixel_format->Bloss;
+ 		int rm = pixel_format->Rmask;
+ 		int gm = pixel_format->Gmask;
+ 		int bm = pixel_format->Bmask;
  		uint32 r = palette_red[i] & 0xff;
  		uint32 g = palette_green[i] & 0xff;
  		uint32 b = palette_blue[i] & 0xff;

@@ -22,6 +22,7 @@
 #define _DISPLAY_H
 
 #include <SDL.h>
+extern SDL_PixelFormat *pixel_format;
 extern SDL_Surface *real_screen;
 
 // Colors for speedometer/drive LEDs
