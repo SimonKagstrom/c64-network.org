@@ -271,37 +271,6 @@ void C64Display::Update_16(uint8 *src_pixels)
 {
 	const Uint16 src_pitch = DISPLAY_X;
 
-	#ifdef GEKKO
-	
-	if (ThePrefs.DisplayType == DISPTYPE_WINDOW)
-	{	
-		SDL_Rect srcrect = {0, 0, DISPLAY_X, DISPLAY_Y};
-		SDL_Rect dstrect = {0, 8, FULL_DISPLAY_X, FULL_DISPLAY_Y-16};
-		Uint16 *dst_pixels = (Uint16*)sdl_screen->pixels ;
-		const Uint16 src_pitch = DISPLAY_X;
-		const Uint16 dst_pitch = sdl_screen->pitch / sizeof(Uint16);
-
-		/* Draw 1-1 */
-		for (int y = 0; y < DISPLAY_Y; y++)
-		{
-			for (int x = 0; x < DISPLAY_X; x++)
-			{
-				int src_off = y * src_pitch + x;
-				int dst_off = y * dst_pitch + x;
-				Uint16 v = palette_16[src_pixels[src_off]];			
-				dst_pixels[ dst_off ] = v;
-			}
-		}
-
-	/* Stretch */
-	SDL_SoftStretch(sdl_screen, &srcrect, real_screen, &dstrect);	
-	}
-	
-	else
-	
-	#endif
-	{
-
 	const int x_border = (DISPLAY_X - FULL_DISPLAY_X / 2) / 2;
 	const int y_border = (DISPLAY_Y - FULL_DISPLAY_Y / 2) / 2;
 	Uint16 *dst_pixels = (Uint16*)real_screen->pixels;
@@ -322,8 +291,6 @@ void C64Display::Update_16(uint8 *src_pixels)
 			dst_pixels[ dst_off + dst_pitch + 1] = v;
 		}
 	}
-	}
-
 }
 
 void C64Display::Update(uint8 *src_pixels)
