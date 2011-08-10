@@ -96,8 +96,6 @@ void C64Display::UpdateLEDs(int l0, int l1, int l2, int l3)
 
 // Display surface
 static Uint8 screen[DISPLAY_X * DISPLAY_Y];
-static Uint16 *screen_16;
-static Uint32 *screen_32;
 static int screen_bits_per_pixel;
 
 static SDL_Window *window;
@@ -198,25 +196,6 @@ int init_graphics(void)
 
 	info = SDL_GetVideoInfo();
 	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
-
-	free(screen_16);
-	free(screen_32);
-
-	switch (screen_bits_per_pixel)
-	{
-	case 16:
-		/* Allocate a 16 bit screen */
-		screen_16 = (Uint16*)calloc(real_screen->pitch * FULL_DISPLAY_Y, sizeof(Uint16) );
-		break;
-	case 24:
-	case 32:
-		screen_32 = (Uint32*)calloc(real_screen->pitch * FULL_DISPLAY_Y, sizeof(Uint32) );
-		break;
-	case 8:
-	default:
-		LOG("Needs 16, 24 or 32 bits colo depth\n");
-		break;
-	}
 
 	return 1;
 }
