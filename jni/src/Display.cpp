@@ -102,7 +102,8 @@ static int screen_bits_per_pixel;
 
 static SDL_Window *window;
 SDL_PixelFormat *pixel_format = NULL;
-
+SDL_Renderer *renderer = NULL;
+SDL_Texture *screen_texture = NULL;
 SDL_Surface *real_screen = NULL;
 
 // Keyboard
@@ -166,13 +167,32 @@ int init_graphics(void)
 	window = SDL_CreateWindow("c64-network.org",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			FULL_DISPLAY_X, FULL_DISPLAY_Y,
-			SDL_WINDOW_SHOWN | SDL_WINDOW_FULLSCREEN);
+			SDL_WINDOW_SHOWN);
 	panic_if(!window,
 			"Can't create SDL window: %s\n", SDL_GetError());
 
 	pixel_format = SDL_AllocFormat(SDL_GetWindowPixelFormat(window));
 
-	real_screen = SDL_GetWindowSurface(window);
+	// Setup SDL renderer
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	panic_if(!renderer,
+			"Can't create SDL renderer: %s\n", SDL_GetError());
+
+	// And a texture to draw to
+	screen_texture = SDL_CreateTexture(renderer,
+            SDL_PIXELFORMAT_ARGB8888,
+            SDL_TEXTUREACCESS_STREAMING,
+            FULL_DISPLAY_X, FULL_DISPLAY_Y);
+	panic_if(!screen_texture,
+			"Can't create SDL texture: %s\n", SDL_GetError());
+
+	real_screen = SDL_CreateRGBSurfaceFrom(NULL,
+			FULL_DISPLAY_X, FULL_DISPLAY_Y,
+			32, 0,
+			0x00FF0000,
+			0x0000FF00,
+			0x000000FF,
+			0xFF000000);
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
 
@@ -329,6 +349,11 @@ void C64Display::Update_16(uint8 *src_pixels)
 
 void C64Display::Update(uint8 *src_pixels)
 {
+	SDL_RenderClear(renderer);
+	SDL_LockTexture(screen_texture, NULL,
+	                &real_screen->pixels,
+	                &real_screen->pitch);
+
 	if (screen_bits_per_pixel == 16)
 		this->Update_16(src_pixels);
 	else
@@ -336,7 +361,9 @@ void C64Display::Update(uint8 *src_pixels)
 
 	Gui::gui->draw(real_screen);
 
-	SDL_UpdateWindowSurface(window);
+	SDL_UnlockTexture(screen_texture);
+	SDL_RenderCopy(renderer, screen_texture, NULL, NULL);
+	SDL_RenderPresent(renderer);
 }
 
 void C64Display::Update()
