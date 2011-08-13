@@ -26,12 +26,25 @@ extern SDL_Surface *screen;
 #define GAME_ROOT_PATH "/frodo/images"
 #define TMP_ROOT_PATH "/frodo/tmp"
 #define SAVE_GAME_ROOT_PATH "/frodo/saves"
+#elif defined(ANDROID)
+#define THEME_ROOT_PATH "assets/themes"
+#define METADATA_ROOT_PATH "/sdcard/frodo/metadata"
+#define GAME_ROOT_PATH "/sdcard/frodo/images"
+#define TMP_ROOT_PATH "/sdcard/frodo/tmp"
+#define SAVE_GAME_ROOT_PATH "/sdcard/frodo/saves"
 #else
 #define THEME_ROOT_PATH "themes"
 #define METADATA_ROOT_PATH "metadata"
 #define GAME_ROOT_PATH "images"
 #define TMP_ROOT_PATH "tmp"
 #define SAVE_GAME_ROOT_PATH "saves"
+#endif
+
+/* Assets would be compressed otherwise */
+#if defined(ANDROID)
+#define FONT_NAME "font.ttf.png"
+#else
+#define FONT_NAME "font.ttf"
 #endif
 
 static const char *get_theme_path(const char *dir, const char *what)
@@ -204,8 +217,8 @@ bool Gui::setTheme(const char *path)
 	this->highlighted_key = this->loadThemeImage(path, "highlighted_key.png");
 	this->selected_key = this->loadThemeImage(path, "selected_key.png");
 
-	this->default_font = this->loadThemeFont(path, "font.ttf", 18);
-	this->small_font = this->loadThemeFont(path, "font.ttf", 16);
+	this->default_font = this->loadThemeFont(path, FONT_NAME, 18);
+	this->small_font = this->loadThemeFont(path, FONT_NAME, 16);
 
 	if (!this->bg_left || !this->bg_right || !this->bg_middle ||
 			!this->bg_submenu_left || !this->bg_submenu_right ||
