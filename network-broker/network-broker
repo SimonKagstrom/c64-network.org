@@ -130,7 +130,7 @@ class Packet:
 byte order"""
         self.magic = struct.unpack(">H", data[0:2])[0]
         self.type = struct.unpack(">H", data[2:4])[0]
-        self.size = struct.unpack(">L", data[4:8])[0]
+        self.size = struct.unpack(">I", data[4:8])[0]
 
     def get_magic(self):
         return self.magic
@@ -144,7 +144,7 @@ byte order"""
     def marshal(self):
         if self.type != STOP and self.type != PING:
             log_info("Sending packet %d (%d bytes)" % (self.type, self.size))
-        return struct.pack(">HHL", self.magic, self.type, self.size)
+        return struct.pack(">HHI", self.magic, self.type, self.size)
 
 class StopPacket(Packet):
     def __init__(self):
@@ -169,13 +169,13 @@ class RegisterDataPacket(Packet):
 
     def demarshal_from_data(self, data):
         Packet.demarshal_from_data(self, data)
-        self.key = struct.unpack(">L", data[8:12])[0]
-        self.metadata = struct.unpack(">L", data[12:16])[0]
+        self.key = struct.unpack(">I", data[8:12])[0]
+        self.metadata = struct.unpack(">I", data[12:16])[0]
         self.data = data[16:]
 
     def marshal(self):
-        return Packet.marshal(self) + struct.pack(">L", self.key) + \
-            struct.pack(">L", self.metadata) + self.data
+        return Packet.marshal(self) + struct.pack(">I", self.key) + \
+            struct.pack(">I", self.metadata) + self.data
 
 
 class PingAckPacket(Packet):
@@ -191,11 +191,11 @@ class PingAckPacket(Packet):
     def demarshal_from_data(self, data):
         """Init a new packet from raw data."""
         Packet.demarshal_from_data(self, data)
-        self.seq = struct.unpack(">L", data[8:12])[0]
+        self.seq = struct.unpack(">I", data[8:12])[0]
 
     def marshal(self):
         """Create data representation of a packet"""
-        return Packet.marshal(self) + struct.pack(">L", self.seq)
+        return Packet.marshal(self) + struct.pack(">I", self.seq)
 
 class DisconnectPacket(Packet):
     def __init__(self):
@@ -239,7 +239,7 @@ class SelectPeerPacket(Packet):
     def demarshal_from_data(self, data):
         """Create a new packet from raw data."""
         Packet.demarshal_from_data(self, data)
-        self.server_id = struct.unpack(">L", data[8:12])[0]
+        self.server_id = struct.unpack(">I", data[8:12])[0]
 
     def get_id(self):
         return self.server_id
@@ -267,15 +267,15 @@ class ConnectToBrokerPacket(Packet):
         self.key = struct.unpack(">H", data[44:46])[0]
         self._is_master = struct.unpack(">H", data[46:48])[0]
         self.name = struct.unpack("32s", data[48:48+32])[0]
-        self.server_id = struct.unpack(">L", data[80:84])[0]
-        self.version = struct.unpack(">L", data[84:88])[0]
+        self.server_id = struct.unpack(">I", data[80:84])[0]
+        self.version = struct.unpack(">I", data[84:88])[0]
 
         self.name = self.name[0:self.name.find('\0')]
 
         if self.version >= 4:
             self.region = struct.unpack(">B", data[88:89])[0]
             self.avatar = struct.unpack(">H", data[90:92])[0]
-            self.screenshot_key = struct.unpack(">L", data[92:96])[0]
+            self.screenshot_key = struct.unpack(">I", data[92:96])[0]
 
     def get_key(self):
         return self.key
@@ -317,19 +317,19 @@ class ListPeersPacket(Packet):
             self.size = self.size + 8
 
     def marshal(self):
-        out = struct.pack(">L16sHBx", self.n_peers, "", 0, self.flags)
+        out = struct.pack(">I16sHBx", self.n_peers, "", 0, self.flags)
 
         for peer in self.peers:
             name = "%s (%s)" % (peer.name, peer.country)
             if peer.country == "":
                 name = peer.name
-            out = out + struct.pack(">HH16s16sHH31sBLL",
+            out = out + struct.pack(">HH16s16sHH31sBII",
                                     0, peer.public_port, "",
                                     peer.public_ip, peer.key,
                                     peer.is_master, name,
                                     0, peer.id, self.version)
             if self.version >= 4:
-                out = out + struct.pack(">BxHL", peer.region, peer.avatar, peer.screenshot_key)
+                out = out + struct.pack(">BxHI", peer.region, peer.avatar, peer.screenshot_key)
 
         return Packet.marshal(self) + out
 
@@ -376,7 +376,7 @@ class Peer:
         self.last_ping = cur_time()
 
     def addr_to_ip_and_port(self, addr):
-        ip = struct.unpack("@L", socket.inet_pton(socket.AF_INET, addr[0]))[0]
+        ip = struct.unpack("@I", socket.inet_pton(socket.AF_INET, addr[0]))[0]
         port = addr[1]
         return "%08x" % (ip), port
 
@@ -502,7 +502,7 @@ class BrokerPacketHandler(SocketServer.DatagramRequestHandler):
                 break
             magic = struct.unpack(">H", data[off:off + 2])[0]
             type = struct.unpack(">H", data[off + 2:off + 4])[0]
-            size = struct.unpack(">L", data[off + 4:off + 8])[0]
+            size = struct.unpack(">I", data[off + 4:off + 8])[0]
 
             if type == STOP:
                 break
