@@ -8,4 +8,4 @@ jni/saves
 jni/objs-host
 jni/frodo
 jni/deps
-
+*.pyc
