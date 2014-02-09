@@ -673,6 +673,7 @@ void C64Display::PollKeyboard(uint8 *key_matrix, uint8 *rev_matrix, uint8 *joyst
 						break;
 
 					case SDLK_HOME:	// Home: Pause and enter menu
+					case SDLK_ESCAPE:
 						Gui::gui->activate();
 						break;
 
