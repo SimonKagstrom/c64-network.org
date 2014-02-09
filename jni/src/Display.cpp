@@ -141,7 +141,7 @@ int FULL_DISPLAY_Y = 480;
 int init_graphics(void)
 {
 	Uint32 rmask, gmask, bmask, amask;
-	const SDL_VideoInfo *info;
+	const SDL_RendererInfo *info;
 
 	/* SDL interprets each pixel as a 32-bit number, so our masks must depend
            on the endianness (byte order) of the machine */
@@ -194,8 +194,8 @@ int init_graphics(void)
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
 
-	info = SDL_GetVideoInfo();
-	screen_bits_per_pixel = info->vfmt->BitsPerPixel;
+//	info = SDL_GetRenderInfo();
+	screen_bits_per_pixel = 24;//SDL_BITSPERPIXEL(info->format);
 
 	return 1;
 }
@@ -212,8 +212,6 @@ C64Display::C64Display(C64 *the_c64) : TheC64(the_c64)
 	networktraffic_string[0] = 0;
 	this->text_message_send = NULL;
 
-	// Open window
-	SDL_WM_SetCaption(VERSION_STRING, "Frodo");
 	// LEDs off
 	for (int i=0; i<4; i++)
 		led_state[i] = old_led_state[i] = LED_OFF;
@@ -354,7 +352,7 @@ SDL_Surface *C64Display::SurfaceFromC64Display()
 			dst_pixels[ dst_off ] = v;
 		}
 	}
-	SDL_SetColors(out, sdl_palette, 0, PALETTE_SIZE);
+	SDL_SetPaletteColors(out->format->palette, sdl_palette, 0, PALETTE_SIZE);
 
 	return out;
 }
@@ -459,7 +457,7 @@ void C64Display::UpdateKeyMatrix(int c64_key, bool key_up,
  *  Poll the keyboard
  */
 
-void C64Display::TranslateKey(SDLKey key, bool key_up, uint8 *key_matrix,
+void C64Display::TranslateKey(SDL_Keycode key, bool key_up, uint8 *key_matrix,
 		uint8 *rev_matrix, uint8 *joystick)
 {
 	static bool shift_on = false;
@@ -531,8 +529,8 @@ void C64Display::TranslateKey(SDLKey key, bool key_up, uint8 *key_matrix,
 		case SDLK_RCTRL: c64_key = MATRIX(7,5); break;
 		case SDLK_LSHIFT: c64_key = MATRIX(1,7); break;
 		case SDLK_RSHIFT: c64_key = MATRIX(6,4); break;
-		case SDLK_LALT: case SDLK_LMETA: c64_key = MATRIX(7,5); break;
-		case SDLK_RALT: case SDLK_RMETA: c64_key = MATRIX(7,5); break;
+		case SDLK_LALT: c64_key = MATRIX(7,5); break;
+		case SDLK_RALT: c64_key = MATRIX(7,5); break;
 		case SDLK_UP:
 		{
 			if (ThePrefs.CursorKeysForJoystick)
@@ -574,15 +572,15 @@ void C64Display::TranslateKey(SDLKey key, bool key_up, uint8 *key_matrix,
 		case SDLK_F7: c64_key = MATRIX(0,3); break;
 		case SDLK_F8: c64_key = MATRIX(0,3) | 0x80; break;
 
-		case SDLK_KP0: case SDLK_KP5: c64_key = 0x10 | 0x40; break;
-		case SDLK_KP1: c64_key = 0x06 | 0x40; break;
-		case SDLK_KP2: c64_key = 0x02 | 0x40; break;
-		case SDLK_KP3: c64_key = 0x0a | 0x40; break;
-		case SDLK_KP4: c64_key = 0x04 | 0x40; break;
-		case SDLK_KP6: c64_key = 0x08 | 0x40; break;
-		case SDLK_KP7: c64_key = 0x05 | 0x40; break;
-		case SDLK_KP8: c64_key = 0x01 | 0x40; break;
-		case SDLK_KP9: c64_key = 0x09 | 0x40; break;
+		case SDLK_KP_0: case SDLK_KP_5: c64_key = 0x10 | 0x40; break;
+		case SDLK_KP_1: c64_key = 0x06 | 0x40; break;
+		case SDLK_KP_2: c64_key = 0x02 | 0x40; break;
+		case SDLK_KP_3: c64_key = 0x0a | 0x40; break;
+		case SDLK_KP_4: c64_key = 0x04 | 0x40; break;
+		case SDLK_KP_6: c64_key = 0x08 | 0x40; break;
+		case SDLK_KP_7: c64_key = 0x05 | 0x40; break;
+		case SDLK_KP_8: c64_key = 0x01 | 0x40; break;
+		case SDLK_KP_9: c64_key = 0x09 | 0x40; break;
 
 		case SDLK_KP_DIVIDE: c64_key = MATRIX(6,7); break;
 		case SDLK_KP_ENTER: c64_key = MATRIX(0,1); break;
@@ -660,7 +658,7 @@ void C64Display::PollKeyboard(uint8 *key_matrix, uint8 *rev_matrix, uint8 *joyst
 				switch (event.key.keysym.sym) {
 
 					case SDLK_F10:	// F10/ScrLk: Enter text (for network taunts)
-					case SDLK_SCROLLOCK:
+					case SDLK_SCROLLLOCK:
 						if (TheC64->network_connection_type == CLIENT ||
 								TheC64->network_connection_type == MASTER)
 							this->TypeNetworkMessage();

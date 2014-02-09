@@ -158,11 +158,13 @@ struct  png_write_user_struct
 
 static void user_write_fn(png_structp png_ptr, png_bytep bytes, png_size_t sz)
 {
+#if 0
 	struct png_write_user_struct *out = (struct png_write_user_struct *)png_ptr->io_ptr;
 
 	out->data = xrealloc(out->data, out->sz + sz);
 	memcpy((uint8_t*)out->data + out->sz, bytes, sz);
 	out->sz += sz;
+#endif
 }
 
 
@@ -236,7 +238,7 @@ void *sdl_surface_to_png(SDL_Surface *surf, size_t *out_sz)
 	{
 		/* Set the palette if there is one.  REQUIRED for indexed-color images */
 		palette = (png_colorp)png_malloc(png_ptr,
-				PNG_MAX_PALETTE_LENGTH * png_sizeof(png_color));
+				PNG_MAX_PALETTE_LENGTH * sizeof(png_color));
 
 		/* KLUDGE! For some reason, surf->format->palette doesn't work... */
 		for (int i = 0; i < PALETTE_SIZE; i++)
@@ -312,7 +314,7 @@ SDL_Surface *sdl_surface_8bit_copy(SDL_Surface *src)
 		return NULL;
 	memcpy(out->pixels, src->pixels, src->h * src->pitch);
 
-	SDL_SetColors(out, sdl_palette, 0, PALETTE_SIZE);
+	SDL_SetPaletteColors(out->format->palette, sdl_palette, 0, PALETTE_SIZE);
 
 	return out;
 }
