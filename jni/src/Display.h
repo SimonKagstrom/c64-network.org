@@ -59,7 +59,7 @@ class Prefs;
 class C64Display {
 public:
 	C64Display(C64 *the_c64);
-	~C64Display();
+	virtual ~C64Display();
 
 	void Update(void);
 	void UpdateLEDs(int l0, int l1, int l2, int l3);

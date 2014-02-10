@@ -215,7 +215,7 @@ class Network
 public:
 	Network(const char *remote_host, int port);
 
-	~Network();
+	virtual ~Network();
 
 	void EncodeDisplay(Uint8 *master, Uint8 *remote);
 

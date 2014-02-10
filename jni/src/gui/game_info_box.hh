@@ -16,6 +16,10 @@ public:
 		this->setSelectedBackground(NULL, NULL, NULL, NULL, NULL, NULL);
 	}
 
+	virtual ~GameInfoBox()
+	{
+	}
+
 	void setGameInfo(GameInfo *gi)
 	{
 		/* Make a copy */

@@ -12,6 +12,10 @@ public:
 		this->setSelectedBackground(NULL, NULL, NULL, NULL, NULL, NULL);
 	}
 
+	virtual ~HelpBox()
+	{
+	}
+
 	void setHelpMessages(const char ***all_messages)
 	{
 		this->all_messages = all_messages;

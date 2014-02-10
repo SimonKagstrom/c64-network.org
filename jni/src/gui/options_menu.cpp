@@ -17,7 +17,7 @@ public:
 		this->setText(options_menu_messages);
 	}
 
-	~OptionsMenu()
+	virtual ~OptionsMenu()
 	{
 	}
 
@@ -114,7 +114,7 @@ public:
 		this->menu = new OptionsMenu(Gui::gui->default_font, this->help);
 	}
 
-	~OptionsView()
+	virtual ~OptionsView()
 	{
 		delete this->help;
 		delete this->menu;

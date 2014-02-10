@@ -72,6 +72,10 @@ public:
 		this->setSelectedBackground(NULL, NULL, NULL, NULL, NULL, NULL);
 	}
 
+	virtual ~PeerInfoBox()
+	{
+	}
+
 	void setPeerInfo(PeerInfo *pi)
 	{
 		this->pi = pi;
@@ -145,7 +149,7 @@ public:
 		this->infoBox = infoBox;
 	}
 
-	~NetworkUserMenu()
+	virtual ~NetworkUserMenu()
 	{
 		this->freePeers();
 	}

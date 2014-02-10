@@ -22,7 +22,7 @@ public:
 		this->setText(this->messages);
 	}
 
-	~NetworkRegionMenu()
+	virtual ~NetworkRegionMenu()
 	{
 	}
 
@@ -60,7 +60,7 @@ public:
 		this->menu = new NetworkRegionMenu(Gui::gui->default_font);
 	}
 
-	~NetworkRegionView()
+	virtual ~NetworkRegionView()
 	{
 		delete this->menu;
 	}

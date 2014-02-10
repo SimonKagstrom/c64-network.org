@@ -63,6 +63,10 @@ public:
 		this->setText(main_menu_messages);
 	}
 
+	virtual ~MainMenu()
+	{
+	}
+
 	virtual void selectCallback(int which)
 	{
 		switch (which)
@@ -156,7 +160,7 @@ public:
 		this->menu = new MainMenu(Gui::gui->default_font, this->help);
 	}
 
-	~MainView()
+	virtual ~MainView()
 	{
 		delete this->help;
 		delete this->menu;

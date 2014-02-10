@@ -13,7 +13,7 @@ class NetworkUserView : public GuiView
 public:
 	NetworkUserView();
 
-	~NetworkUserView();
+	virtual ~NetworkUserView();
 
 	void runLogic();
 

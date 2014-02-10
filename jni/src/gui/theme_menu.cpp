@@ -8,7 +8,7 @@ class ThemeView : public GuiView
 public:
 	ThemeView();
 
-	~ThemeView();
+	virtual ~ThemeView();
 
 	void pushEvent(event_t ev);
 
@@ -31,6 +31,10 @@ class ThemeMenu : public FileBrowser
 public:
 	ThemeMenu(Font *font) :
 		FileBrowser(NULL, font)
+	{
+	}
+
+	virtual ~ThemeMenu()
 	{
 	}
 

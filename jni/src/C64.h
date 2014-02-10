@@ -61,7 +61,7 @@ class CmdPipe;
 class C64 {
 public:
 	C64();
-	~C64();
+	virtual ~C64();
 
 	void Run(void);
 	void Quit(void);

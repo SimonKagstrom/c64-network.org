@@ -19,7 +19,7 @@ class DiscView : public GuiView
 public:
 	DiscView();
 
-	~DiscView();
+	virtual ~DiscView();
 
 	void pushEvent(event_t ev);
 
@@ -47,6 +47,10 @@ public:
 	{
 		/* ~45 seconds from now */
 		TimerController::controller->arm(this, 45000);
+	}
+
+	virtual ~SaveScreenshot()
+	{
 	}
 
 	virtual void timeoutCallback()

@@ -11,6 +11,10 @@ class DialogueBox;
 class DialogueListener : public Listener
 {
 public:
+	virtual ~DialogueListener()
+	{
+	}
+
 	virtual void selectCallback(DialogueBox *which, int selected);
 
 	virtual void escapeCallback(DialogueBox *which, int selected);
@@ -19,6 +23,10 @@ public:
 class DialogueBox : public Menu, public ListenerManager
 {
 public:
+	virtual ~DialogueBox()
+	{
+	}
+
 	DialogueBox(const char *msgs[], bool delete_on_action = true);
 
 	virtual void selectCallback(int which);

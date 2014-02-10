@@ -20,7 +20,7 @@ public:
 		memset(this->strs, 0, sizeof(this->strs));
 	}
 
-	~NetworkMenu()
+	virtual ~NetworkMenu()
 	{
 	}
 
@@ -156,7 +156,7 @@ public:
 		this->menu = new NetworkMenu(Gui::gui->default_font, this->help);
 	}
 
-	~NetworkView()
+	virtual ~NetworkView()
 	{
 		delete this->help;
 		delete this->menu;

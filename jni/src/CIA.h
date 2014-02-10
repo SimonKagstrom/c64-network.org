@@ -81,6 +81,10 @@ class MOS6526_1 : public MOS6526 {
 public:
 	MOS6526_1(MOS6510 *CPU, MOS6569 *VIC);
 
+	virtual ~MOS6526_1()
+	{
+	}
+
 	void Reset(void);
 	uint8 ReadRegister(uint16 adr);
 	void WriteRegister(uint16 adr, uint8 byte);
@@ -104,6 +108,10 @@ private:
 class MOS6526_2 : public MOS6526{
 public:
 	MOS6526_2(MOS6510 *CPU, MOS6569 *VIC, MOS6502_1541 *CPU1541);
+
+	virtual ~MOS6526_2()
+	{
+	}
 
 	void Reset(void);
 	uint8 ReadRegister(uint16 adr);

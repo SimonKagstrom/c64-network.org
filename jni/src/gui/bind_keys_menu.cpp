@@ -386,7 +386,7 @@ public:
 		this->menu = new BindKeysMenu(Gui::gui->small_font, this->help);
 	}
 
-	~BindKeysView()
+	virtual ~BindKeysView()
 	{
 		delete this->help;
 		delete this->menu;

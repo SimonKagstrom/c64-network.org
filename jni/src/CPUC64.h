@@ -65,6 +65,10 @@ class MOS6510 {
 public:
 	MOS6510(C64 *c64, uint8 *Ram, uint8 *Basic, uint8 *Kernal, uint8 *Char, uint8 *Color);
 
+	virtual ~MOS6510()
+	{
+	}
+
 #ifdef FRODO_SC
 	void EmulateCycle(void);			// Emulate one clock cycle
 #else

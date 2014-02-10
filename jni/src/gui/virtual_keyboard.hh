@@ -24,7 +24,7 @@ struct virtkey;
 class KeyboardListener : public Listener
 {
 public:
-	~KeyboardListener();
+	virtual ~KeyboardListener();
 
 	/* Each key is a string */
 	virtual void keyCallback(bool shift, const char *str)
@@ -40,7 +40,7 @@ class VirtualKeyboard : public GuiView, public ListenerManager
 {
 public:
 	VirtualKeyboard(Font *font);
-	~VirtualKeyboard();
+	virtual ~VirtualKeyboard();
 
 	/* Conversions */
 	const char *keycodeToString(int kc);

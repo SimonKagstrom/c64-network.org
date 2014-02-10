@@ -18,7 +18,7 @@ class SaveGameView : public GuiView
 public:
 	SaveGameView();
 
-	~SaveGameView();
+	virtual ~SaveGameView();
 
 	void pushEvent(event_t ev);
 

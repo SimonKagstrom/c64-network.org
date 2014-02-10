@@ -180,7 +180,7 @@ public:
 		this->menu = new GameInfoMenu(Gui::gui->default_font, this->gameInfo);
 	}
 
-	~GameInfoView()
+	virtual ~GameInfoView()
 	{
 		delete this->gameInfo;
 		delete this->menu;
