@@ -117,15 +117,15 @@ extern "C" int main(int argc, char **argv)
 #endif
 
 	// Init SDL
-        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK) < 0) {
-                LOG("Couldn't initialize SDL (%s)\n", SDL_GetError());
-                return 1;
-	}
-        if (TTF_Init() < 0)
-        {
-                LOG("Unable to init TTF: %s\n", TTF_GetError());
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+		LOG("Couldn't initialize SDL (%s)\n", SDL_GetError());
 		return 1;
-        }
+	}
+	if (TTF_Init() < 0)
+	{
+		LOG("Unable to init TTF: %s\n", TTF_GetError());
+		return 1;
+	}
 
 	fflush(stdout);
 
