@@ -11,7 +11,7 @@ class Font_TTF : public Font
 {
 public:
 	Font_TTF(TTF_Font *font,
-			int r, int g, int b)
+			uint8_t r, uint8_t g, uint8_t b)
 	{
 		this->clr = (SDL_Color){r, g, b};
 		this->font = font;
