@@ -40,13 +40,12 @@ Prefs TheDefaultPrefs;
 static void maybe_write(FILE *fp, bool do_write, const char *fmt, ...)
 {
      va_list ap;
-     int r;
 
      if (!do_write)
 	  return;
 
      va_start(ap, fmt);
-     r = vfprintf(fp, fmt, ap);
+     vfprintf(fp, fmt, ap);
      va_end(ap);
 }
 
