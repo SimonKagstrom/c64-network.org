@@ -214,8 +214,6 @@ void Frodo::LoadFrodorc()
 			"/usr/share/frodo",
 			NULL,
 	};
-	const char *prefs_path = NULL;
-	const char *prefs_name = NULL;
 	const char *total_name = NULL;
 	char home_1[255];
 	char home_2[255];
@@ -243,8 +241,6 @@ void Frodo::LoadFrodorc()
 
 		if (p)
 		{
-			prefs_path = paths[i];
-			prefs_name = name;
 			total_name = p;
 			break;
 		}
