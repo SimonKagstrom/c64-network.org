@@ -56,8 +56,6 @@ C64::C64()
 	c64_ctor1();
 
 	// Open display
-	printf("ssof1 %d:%d\n",
-			sizeof(C64Display), sizeof(C64));
 	TheDisplay = new C64Display(this);
 
 	// Allocate RAM/ROM memory
