@@ -140,22 +140,7 @@ int FULL_DISPLAY_Y = 480;
 
 int init_graphics(void)
 {
-	Uint32 rmask, gmask, bmask, amask;
-	const SDL_RendererInfo *info;
-
-	/* SDL interprets each pixel as a 32-bit number, so our masks must depend
-           on the endianness (byte order) of the machine */
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-	rmask = 0xff000000;
-	gmask = 0x00ff0000;
-	bmask = 0x0000ff00;
-	amask = 0x000000ff;
-#else
-     	rmask = 0x000000ff;
-	gmask = 0x0000ff00;
-	bmask = 0x00ff0000;
-	amask = 0xff000000;
-#endif
+	SDL_RendererInfo info;
 
 	// Open window
 	SDL_ShowCursor(SDL_DISABLE);
@@ -194,8 +179,8 @@ int init_graphics(void)
 	panic_if(!real_screen,
 			"\n\nCannot initialize video: %s\n", SDL_GetError());
 
-//	info = SDL_GetRenderInfo();
-	screen_bits_per_pixel = 24;//SDL_BITSPERPIXEL(info->format);
+	SDL_GetRendererInfo(renderer, &info);
+	screen_bits_per_pixel = SDL_BITSPERPIXEL(info.flags);
 
 	return 1;
 }
@@ -594,6 +579,9 @@ void C64Display::TranslateKey(SDL_Keycode key, bool key_up, uint8 *key_matrix,
 		shift_on = true;
 	else if (c64_key == MATRIX(1,7) || c64_key == MATRIX(6,4))
 		shift_on = false;
+
+	// Maybe use this someday
+	(void)shift_on;
 
 	this->UpdateKeyMatrix(c64_key, key_up, key_matrix, rev_matrix, joystick);
 }
