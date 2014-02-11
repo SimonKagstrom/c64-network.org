@@ -368,6 +368,8 @@ void Gui::exitMenu()
 	prefs_changed = ThePrefs != *this->np;
 	ThePrefs = *this->np;
 
+	// Take back someday
+	(void)prefs_changed;
 	//if (prefs_changed)
 	//	ThePrefs.Save(ThePrefs.PrefsPath);
 
@@ -573,7 +575,7 @@ void Gui::saveGameInfo(const char *base_path, const char *name)
 			if (ferror(fp))
 				warning("Write error on %s\n", new_name);
 			else if ((size_t)n != sz)
-				warning("Could only write %d bytes of %d for %s\n",
+				warning("Could only write %d bytes of %zd for %s\n",
 						n, sz, new_name);
 			fclose(fp);
 		}
