@@ -573,7 +573,7 @@ void Network::DrawTransferredBlocks(SDL_Surface *screen)
 			SDL_Rect r = {x + w, y,     1, h};
 			SDL_Rect u = {x,     y,     w, 1};
 			SDL_Rect d = {x,     y + h, w, 1};
-			uint32 raw = this->square_updated[sq];
+			int raw = this->square_updated[sq];
 			SDL_Rect size = {x,  y,  2 * ((raw & 0xffff) / 17), 4};
 			uint32 color = 4;
 
