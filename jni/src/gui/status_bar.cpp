@@ -15,11 +15,10 @@ void StatusBar::queueMessage(const char *fmt, ...)
 {
 	char buf[255];
 	va_list ap;
-	int r;
 
 	memset(buf, 0, sizeof(buf));
 	va_start(ap, fmt);
-	r = vsnprintf(buf, sizeof(buf) - 1, fmt, ap);
+	vsnprintf(buf, sizeof(buf) - 1, fmt, ap);
 	va_end(ap);
 
 	/* Free the existing message if we are overwriting it */
