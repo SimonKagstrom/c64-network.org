@@ -942,7 +942,7 @@ void C64Display::InitColors(uint8 *colors)
 	sdl_palette[green].g = 0xf0;
 	sdl_palette[green].r = sdl_palette[green].b = 0;
 
- 	for (int i = 0; i < PALETTE_SIZE; i++) {
+	for (int i = 0; i < 16; i++) {
  		int rs = pixel_format->Rshift;
  		int gs = pixel_format->Gshift;
  		int bs = pixel_format->Bshift;
